@@ -1,3 +1,8 @@
+"""
+The following code is modified from 
+https://jamesooi.bitbucket.io/UEEN3123/lectures/UEEN3123-Lecture-04-ii.html
+"""
+
 import sqlite3
 from flask import Flask, jsonify, request, abort
 from argparse import ArgumentParser
