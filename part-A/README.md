@@ -1,5 +1,5 @@
 # tcpip-assignment
-## How to initialized database?
+## How to initialize database?
 
 ```
 cd part-A
