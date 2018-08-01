@@ -39,22 +39,6 @@ def retrieve_specific_station(id):
     db = sqlite3.connect(DB)
     cursor = db.cursor()
     cursor.execute('SELECT * FROM stations WHERE id=?', (id,))
-    rows = cursor.fetchall()
-    db.close()
-
-    rows_as_dict = []
-    for row in rows:
-        row_as_dict = get_row_as_dict(row)
-        rows_as_dict.append(row_as_dict)
-
-    return jsonify(rows_as_dict), 200
-
-
-@app.route('/api/members/<int:member>', methods=['GET'])
-def show(member):
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-    cursor.execute('SELECT * FROM members WHERE id=?', (str(member),))
     row = cursor.fetchone()
     db.close()
 
@@ -64,79 +48,62 @@ def show(member):
     else:
         return jsonify(None), 200
 
-
-@app.route('/api/members', methods=['POST'])
-def store():
+@app.route('/api/stations', methods=['POST'])
+def create_station():
     if not request.json:
         abort(404)
 
-    new_member = (
+    new_station = (
+        request.json['code'],
         request.json['name'],
-        request.json['email'],
-        request.json['phone'],
-        request.json['address'],
-        request.json['postcode'],
-        request.json['city'],
-        request.json['state'],
+        request.json['type']
     )
 
     db = sqlite3.connect(DB)
     cursor = db.cursor()
-
     cursor.execute('''
-        INSERT INTO members(name,email,phone,address,postcode,city,state)
-        VALUES(?,?,?,?,?,?,?)
-    ''', new_member)
+        INSERT INTO stations(code,name,type)
+        VALUES(?,?,?);
+    ''', new_station)
 
     member_id = cursor.lastrowid
-
     db.commit()
-
     response = {
         'id': member_id,
         'affected': db.total_changes,
     }
 
     db.close()
-
     return jsonify(response), 201
 
-
-@app.route('/api/members/<int:member>', methods=['PUT'])
-def update(member):
+@app.route('/api/stations/<int:id>', methods=['PUT'])
+def update_station(id):
     if not request.json:
         abort(400)
 
     if 'id' not in request.json:
         abort(400)
 
-    if int(request.json['id']) != member:
+    if int(request.json['id']) != id:
         abort(400)
 
-    update_member = (
-        request.json['name'],
-        request.json['email'],
-        request.json['phone'],
-        request.json['address'],
-        request.json['postcode'],
-        request.json['city'],
-        request.json['state'],
-        str(member),
-    )
+    
 
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     cursor.execute('''
-        UPDATE members SET
-            name=?,email=?,phone=?,address=?,postcode=?,city=?,state=?
+        UPDATE stations SET
+            code=?, 
+            name=?,
+            type=?
         WHERE id=?
-    ''', update_member)
+    ''', (request.json['code'], request.json['name'], request.json['type'], id))
 
     db.commit()
 
     response = {
-        'id': member,
+        'id': id,
         'affected': db.total_changes,
     }
 
@@ -145,26 +112,26 @@ def update(member):
     return jsonify(response), 201
 
 
-@app.route('/api/members/<int:member>', methods=['DELETE'])
-def delete(member):
+@app.route('/api/stations/<int:id>', methods=['DELETE'])
+def delete(id):
     if not request.json:
         abort(400)
 
     if 'id' not in request.json:
         abort(400)
 
-    if int(request.json['id']) != member:
+    if int(request.json['id']) != id:
         abort(400)
 
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
-    cursor.execute('DELETE FROM members WHERE id=?', (str(member),))
+    cursor.execute('DELETE FROM stations WHERE id=?', ((id),))
 
     db.commit()
 
     response = {
-        'id': member,
+        'id': id,
         'affected': db.total_changes,
     }
 
