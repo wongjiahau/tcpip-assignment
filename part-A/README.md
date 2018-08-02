@@ -30,8 +30,8 @@ curl --header "Content-Type: application/json" \
 ```
 curl --header "Content-Type: application/json" \
     --request PUT \
-    --data '{"code":"upd_code","name":"upd_station", "type": "upd_type", "id": 1}' \
-    http://localhost:5000/api/stations/1
+    --data '{"code":"SBK08","name":"upd_station", "type": "upd_type"}' \
+    http://localhost:5000/api/stations/SBK08
 ```
 
 ### Delete stations (DELETE)

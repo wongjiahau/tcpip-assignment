@@ -81,34 +81,31 @@ def create_station():
     db.close()
     return jsonify(response), 201
 
-@app.route('/api/stations/<int:id>', methods=['PUT'])
-def update_station(id):
+@app.route('/api/stations/<string:code>', methods=['PUT'])
+def update_station(code):
     if not request.json:
         abort(400)
 
-    if 'id' not in request.json:
+    if 'code' not in request.json:
         abort(400)
 
-    if int(request.json['id']) != id:
+    if request.json['code'] != code:
         abort(400)
-
     
-
     db = sqlite3.connect(DB)
     cursor = db.cursor()
 
     cursor.execute('''
         UPDATE stations SET
-            code=?, 
-            name=?,
-            type=?
-        WHERE id=?
-    ''', (request.json['code'], request.json['name'], request.json['type'], id))
+            name=coalesce(?,name),
+            type=coalesce(?,type)
+        WHERE code=?
+    ''', (dict.get(request.json, 'name'), dict.get(request.json, 'type'), code))
 
     db.commit()
 
     response = {
-        'id': id,
+        'code': code,
         'affected': db.total_changes,
     }
 
