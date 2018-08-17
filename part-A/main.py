@@ -23,7 +23,7 @@ def get_row_as_dict(row):
 
 app = Flask(__name__)
 
-
+# 1. GET /api/stations
 @app.route('/api/stations', methods=['GET'])
 def retrieve_station():
     db = sqlite3.connect(DB)
@@ -39,6 +39,7 @@ def retrieve_station():
 
     return jsonify(rows_as_dict), 200
 
+# 2. GET /api/stations/<int:id>
 @app.route('/api/stations/<int:id>', methods=['GET'])
 def retrieve_specific_station(id):
     db = sqlite3.connect(DB)
@@ -53,6 +54,7 @@ def retrieve_specific_station(id):
     else:
         return jsonify(None), 200
 
+# 3. POST /api/stations
 @app.route('/api/stations', methods=['POST'])
 def create_station():
     if not request.json:
@@ -81,6 +83,7 @@ def create_station():
     db.close()
     return jsonify(response), 201
 
+# 4. PUT /api/stations
 @app.route('/api/stations/<string:code>', methods=['PUT'])
 def update_station(code):
     if not request.json:
@@ -113,7 +116,7 @@ def update_station(code):
 
     return jsonify(response), 201
 
-
+# 5. DELETE /api/stations/<int:id>
 @app.route('/api/stations/<int:id>', methods=['DELETE'])
 def delete(id):
     if not request.json:
