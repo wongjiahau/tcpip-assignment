@@ -22,8 +22,8 @@ response = conn.getresponse()
 if response.status == 200:
     members = json.loads(response.read())
 
-    print('>>> Writing data to retrieved_stations.csv')
-    with open('retrieved_stations.csv', 'w', newline='') as file:
+    print('>>> Writing data to q2.csv')
+    with open('q2.csv', 'w', newline='') as file:
         fields = [ 'id', 'code', 'name', 'type']
         writer = csv.DictWriter(file, fieldnames=fields)
 

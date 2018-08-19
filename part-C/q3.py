@@ -13,7 +13,7 @@ PORT = 5000
 print('### Connecting to {}:{}'.format(HOST, PORT))
 conn = http.client.HTTPConnection(HOST, PORT)
 
-with open('new-stations-names.csv') as file:
+with open('q3.csv') as file:
     members = csv.DictReader(file)
     for member in members:
         member = dict(member)
