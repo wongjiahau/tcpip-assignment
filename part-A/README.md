@@ -8,17 +8,17 @@ python3.6 db.py
 ```
 
 ## How to test API?
-### Retrieve stations (GET)
+### 1. Retrieve stations (GET)
 ```
 curl http://localhost:5000/api/stations
 ```
 
-### Retrieve specific stations (GET)
+### 2. Retrieve specific stations (GET)
 ```
 curl http://localhost:5000/api/stations/2
 ```
 
-### Create stations (POST)
+### 3. Create stations (POST)
 ```
 curl --header "Content-Type: application/json" \
     --request POST \
@@ -26,7 +26,7 @@ curl --header "Content-Type: application/json" \
     http://localhost:5000/api/stations
 ```
 
-### Update stations (PUT)
+### 4. Update stations (PUT)
 ```
 curl --header "Content-Type: application/json" \
     --request PUT \
@@ -34,7 +34,7 @@ curl --header "Content-Type: application/json" \
     http://localhost:5000/api/stations/SBK08
 ```
 
-### Delete stations (DELETE)
+### 5. Delete stations (DELETE)
 ```
 curl --header "Content-Type: application/json" \
     --request DELETE \
