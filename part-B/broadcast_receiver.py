@@ -17,6 +17,7 @@ def displayData(propertyName, propertyValue):
     print(f"{propertyName} : {propertyValue}" )
 
 while True:
+    print("Awaiting data . . .")
     data, addr = s.recvfrom(1024)
     data = json.loads(data.decode())
     print("=======================================================")
