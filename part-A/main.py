@@ -32,12 +32,9 @@ def retrieve_station():
     rows = cursor.fetchall()
     db.close()
 
-    rows_as_dict = []
-    for row in rows:
-        row_as_dict = get_row_as_dict(row)
-        rows_as_dict.append(row_as_dict)
+    result = [get_row_as_dict(x) for x in rows]
 
-    return jsonify(rows_as_dict), 200
+    return jsonify(result), 200
 
 # 2. GET /api/stations/<int:id>
 @app.route('/api/stations/<int:id>', methods=['GET'])
@@ -47,12 +44,7 @@ def retrieve_specific_station(id):
     cursor.execute('SELECT * FROM stations WHERE id=?', (id,))
     row = cursor.fetchone()
     db.close()
-
-    if row:
-        row_as_dict = get_row_as_dict(row)
-        return jsonify(row_as_dict), 200
-    else:
-        return jsonify(None), 200
+    return jsonify(get_row_as_dict(row) if row else None), 200
 
 # 3. POST /api/stations
 @app.route('/api/stations', methods=['POST'])
